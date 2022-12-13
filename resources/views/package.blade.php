@@ -41,8 +41,17 @@
             <td>{{ $package->type }}</td>
             <td>{{ $package->commission }}</td>        
             <td> 
+                <div class="btn-toolbar">
                 <button type="button" class="btn btn-primary editBtn" value="{{ $package->id }}">Edit</button>
-                <button type="button" class="btn btn-danger delBtn" value="{{ $package->id }}">Delete</button>
+                
+                <form method="POST" action="/package/{{ $package->id }}">
+                    {{ csrf_field() }}
+                    {{ method_field('DELETE') }}
+                    
+                        <input type="submit" class="btn btn-danger delBtn" value="Delete">
+                    
+                </form>
+                </div>
             </td>                 
         </tr>
         @endforeach
@@ -69,7 +78,7 @@
             </button>
         </div>
         <div class="modal-body">
-        <form action="{{ route('package') }} " method="POST">
+        <form id="packageForm" action="{{ route('package') }} " method="POST">
         @csrf
             <input type="hidden" id="id" name="id">
             <!-- <div class="form-group">
@@ -134,11 +143,12 @@
     });
 </script>
 <script>
-    $(document).on('click', '.delBtn', function() {  
-        var id = $(this).val();  
+    $('.delBtn').click(function(e) {
+        e.preventDefault()
         if (confirm("Are you sure you want to DELETE?")) {
-            $.delete(route('calculation.destroy', id));
+            $(e.target).closest('form').submit() 
         }
     });
 </script>
+
 @endsection

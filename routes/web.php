@@ -38,7 +38,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/commission', [CommissionController::class, 'index'])->name('commission');
     Route::post('/commission', [CommissionController::class, 'store'])->name('commission.store');
     Route::get('/commission/{id}/edit', [CommissionController::class, 'edit'])->name('commission.edit');
-
+    Route::delete('/commission/{id}', [CommissionController::class, 'destroy'])->name('commission.destroy');
 });
 
 Route::middleware('auth', 'role:admin')->group(function () {   
@@ -52,8 +52,10 @@ Route::middleware('auth', 'role:admin')->group(function () {
     Route::get('/user', [UserController::class, 'index'])->name('user');
     Route::post('/user', [UserController::class, 'store'])->name('user.store');
     Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
+    Route::delete('/user/{id}', [CommissionController::class, 'destroy'])->name('commission.destroy');
 });
 
-
-
+Route::get('/test', function () {
+    return view('test');
+});
 require __DIR__.'/auth.php';

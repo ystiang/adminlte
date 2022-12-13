@@ -35,9 +35,18 @@
             <td>{{ $user->name }}</td>
             <td>{{ $user->email }}</td>
             <td>{{ $user->role }}</td>                   
-            <td> 
+            <td>                 
+                <div class="btn-toolbar">
                 <button type="button" class="btn btn-primary editBtn" value="{{ $user->id }}">Edit</button>
-                <button type="button" class="btn btn-danger delBtn" value="{{ $user->id }}">Delete</button>
+                
+                <form method="POST" action="/user/{{ $user->id }}">
+                    {{ csrf_field() }}
+                    {{ method_field('DELETE') }}
+                    
+                        <input type="submit" class="btn btn-danger delBtn" value="Delete">
+                    
+                </form>
+                </div>
             </td>                 
         </tr>
         @endforeach
@@ -123,10 +132,10 @@
     });
 </script>
 <script>
-    $(document).on('click', '.delBtn', function() {  
-        var id = $(this).val();  
+    $('.delBtn').click(function(e) {
+        e.preventDefault()
         if (confirm("Are you sure you want to DELETE?")) {
-            $.delete(route('user.destroy', id));
+            $(e.target).closest('form').submit() 
         }
     });
 </script>

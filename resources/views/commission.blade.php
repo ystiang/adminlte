@@ -50,9 +50,16 @@
             <td>{{ $commission->course }}</td>
             <td>{{ $commission->service }}</td>
             <td>{{ $commission->commission }}</td>        
-            <td> 
+            <td>                 
+                <div class="btn-toolbar">
                 <button type="button" class="btn btn-primary editBtn" value="{{ $commission->id }}">Edit</button>
-                <button type="button" class="btn btn-danger delBtn" value="{{ $commission->id }}">Delete</button>
+                
+                <form method="POST" action="/commission/{{ $commission->id }}">
+                    {{ csrf_field() }}
+                    {{ method_field('DELETE') }}                    
+                    <input type="submit" class="btn btn-danger delBtn" value="Delete">                    
+                </form>
+                </div>
             </td>                 
         </tr>
         @endforeach
@@ -169,10 +176,10 @@
     });
 </script>
 <script>
-    $(document).on('click', '.delBtn', function() {  
-        var id = $(this).val();  
+    $('.delBtn').click(function(e) {
+        e.preventDefault()
         if (confirm("Are you sure you want to DELETE?")) {
-            $.delete(route('commission.destroy', id));
+            $(e.target).closest('form').submit() 
         }
     });
 </script>

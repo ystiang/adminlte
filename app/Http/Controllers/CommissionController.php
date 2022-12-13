@@ -50,6 +50,15 @@ class CommissionController extends Controller
         $user_name = Auth::user()->name;
         $current_datetime = Carbon::now();
         try {    
+            $this->validate($request, [
+                'card' => 'required',
+                'treatment' => 'required',
+                'productcourse' => 'required',
+                'product' => 'required',
+                'course' => 'required',
+                'service' => 'required',
+                'commission' => 'required',
+            ]);  
             Commission::updateOrCreate(
             [            
                 'id' => $request->id,
@@ -113,8 +122,17 @@ class CommissionController extends Controller
      * @param  \App\Models\Commission  $commission
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Commission $commission)
+    public function destroy($id)
     {
-        //
+        $commission=Commission::findOrFail($id);
+
+        if(is_null($commission)) {
+            return abort(404);
+        }
+
+        $commission->delete();
+
+        return back();
+    
     }
 }

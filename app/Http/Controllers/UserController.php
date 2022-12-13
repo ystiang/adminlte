@@ -47,11 +47,13 @@ class UserController extends Controller
             ]);   
             if ($request->role == 'admin') {
                 $user->assignRole('admin');
-            } else {
+            } 
+            if ($request->role == 'user') {
+                $user->removeRole('admin');
                 $user->assignRole('user');
             }
                     
-            return redirect()->route('package');
+            return back();
         } catch (Exception $e) {
             dd($e);
         }

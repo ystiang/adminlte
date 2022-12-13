@@ -37,7 +37,14 @@ class PackageController extends Controller
      */
     public function store(Request $request)
     {
-        try {    
+        try {
+            // Validate the form input
+            $this->validate($request, [
+                'package' => 'required',
+                'treatment' => 'required',
+                'type' => 'required',
+                'commission' => 'required',
+            ]);    
             Package::updateOrCreate(
             [            
                 'id' => $request->id,
