@@ -3,7 +3,7 @@
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
       <!-- <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8"> -->
-      <span class="brand-text font-weight-light">AdminLTE 3</span>
+      <span class="brand-text font-weight-light">V-Beauty</span>
     </a>
 
     
@@ -12,7 +12,13 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="info">
-          <a href="home" class="d-block">Example</a>
+          <a href="home" class="d-block">
+          @if (Auth::check())
+            {{ Auth::user()->name }}
+          @else
+            You are not logged in.
+          @endif
+          </a>
         </div>
       </div> 
 
@@ -35,24 +41,27 @@
                with font-awesome or any other icon font library -->
           
           <li class="nav-item">
-            <a href="1" class="nav-link">
+            <a href="commission" class="nav-link">
               <i class="nav-icon fas fa-table"></i>
               <p>Commission Report</p>
             </a>            
           </li>
+          <!-- Admin Only -->
+          @role('admin')
           <li class="nav-item">
-            <a href="2" class="nav-link">
+            <a href="package" class="nav-link">
               <i class="nav-icon fas fa-table"></i>
               <p>Package List</p>
             </a>            
           </li>
-          <!-- Admin Only -->
+          
           <li class="nav-item">
-            <a href="3" class="nav-link">
+            <a href="user" class="nav-link">
               <i class="nav-icon fas fa-table"></i>
               <p>User Role</p>
             </a>            
           </li>
+          @endrole
           <!-- Admin Only -->
           <li>
             
