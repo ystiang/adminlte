@@ -68,8 +68,8 @@ class CommissionController extends Controller
             ],
             [
                 'date' => $current_datetime,
-                'user_id' => $user_id,
-                'user_name' => $user_name,
+                'user_id' => $request->user_id,
+                'user_name' => $request->user_name,
                 'card' => $request->card,
                 'treatment' => $request->treatment,
                 'productcourse' => $request->productcourse,

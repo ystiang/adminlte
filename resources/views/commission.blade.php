@@ -20,9 +20,12 @@
 
 <body>
         <!-- Button trigger modal -->
+    @role('admin')
+    @else
     <button type="button" class="btn btn-primary addBtn">
     Add
     </button>
+    @endrole
    
     <thead>
         <tr>
@@ -94,11 +97,20 @@
         <form action="{{ route('commission') }} " method="POST">
         @csrf
             <input type="hidden" id="id" name="id">
-            <input type="hidden" id="user_id" name="user_id" value="{{ Auth::user()->id }}">
+            @role('admin')
+            <input type="hidden" id="user_id" name="user_id">
             <div class="form-group">
                 <label for="package">Name</label>
-                <input type="text" class="form-control" id="user_name" name="user_name" value="{{ Auth::user()->name }}" disabled>
+                <input type="text" class="form-control" id="user_name" name="user_name">
             </div>
+            @else
+            <input type="hidden" id="user_id" name="user_id" value="{{ Auth::user()->id }}">
+            <input type="hidden" id="user_name" name="user_name" value="{{ Auth::user()->name }}">
+            <div class="form-group">
+                <label for="package">Name</label>
+                <input type="text" class="form-control" value="{{ Auth::user()->name }}" disabled>
+            </div>
+            @endrole
             <div class="form-group">
                 <label for="treatment">Card</label>
                 <input type="text" class="form-control" id="card" name="card">
@@ -163,7 +175,9 @@
         var id = $(this).val();
         $.get('commission/' + id + '/edit', function (data) {
             // success
-            
+            $('#id').val(data.id);
+            $('#user_id').val(data.user_id);
+            $('#user_name').val(data.user_name);
             $('#card').val(data.card);
             $('#treatment').val(data.treatment);
             $('#productcourse').val(data.productcourse);
