@@ -19,12 +19,15 @@ class CommissionController extends Controller
     {
         // Retrieve the authenticated user
         $user = Auth::user();
+        
+        if ($user->role == 'admin' ) {
+            $commissions = Commission::all();
+        } else {
+            // Retrieve the data that belongs to the user
+            $commissions = Commission::where('user_id', $user->id)->get();
+        }
 
-        // Retrieve the data that belongs to the user
-        $commissions = Commission::where('user_id', $user->id)->get();
-
-        // Return the view and pass the data to it    
-        $commissions = Commission::where('user_id', $user->id)->get();
+        // Return the view and pass the data to it           
         return view('commission', ['commissions' => $commissions]);
     }
 
