@@ -28,8 +28,10 @@
         <tr>
             <th>Package</th>
             <th>Treatment</th>
-            <th>Type</th>
-            <th>Commission</th>   
+            <th>Price</th>
+            <th>Method</th>
+            <th>Commission Rate</th>   
+            <th>Commission Amount</th> 
             <th>Action</th>                
         </tr>
     </thead>
@@ -38,8 +40,10 @@
         <tr>
             <td>{{ $package->package }}</td>
             <td>{{ $package->treatment }}</td>
-            <td>{{ $package->type }}</td>
-            <td>{{ $package->commission }}</td>        
+            <td>{{ $package->price }}</td>
+            <td>{{ $package->method }}</td>   
+            <td>{{ $package->commission_rate }}</td> 
+            <td>{{ $package->commission_amount }}</td>      
             <td> 
                 <div class="btn-toolbar">
                 <button type="button" class="btn btn-primary editBtn" value="{{ $package->id }}">Edit</button>
@@ -56,7 +60,7 @@
         </tr>
         @endforeach
     </tbody>
-    <tfoot>
+    <!-- <tfoot>
         <tr>
             <th>Package</th>
             <th>Treatment</th>
@@ -64,7 +68,7 @@
             <th>Commission</th>
             <th>Action</th> 
         </tr>
-    </tfoot>
+    </tfoot> -->
     
 
      <!-- Modal Add -->
@@ -94,12 +98,23 @@
                 <input type="text" class="form-control" id="treatment" name="treatment">
             </div>
             <div class="form-group">
-                <label for="type">Type</label>
-                <input type="text" class="form-control" id="type" name="type">
+                <label for="price">Price</label>
+                <input type="text" class="form-control" id="price" name="price">
             </div>
             <div class="form-group">
-                <label for="commission">Commission</label>
-                <input type="text" class="form-control" id="commission" name="commission">
+                <label for="method">Method</label>
+                <select class="form-control" id="method" name="method">
+                    <option value="Amount">Amount</option>
+                    <option value="Percentage">Percentage</option>                    
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="commission_rate">Commission Rate</label>
+                <input type="text" class="form-control" id="commission_rate" name="commission_rate">
+            </div>  
+            <div class="form-group">
+                <label for="commission_amount">Commission Amount</label>
+                <input type="text" class="form-control" id="commission_amount" name="commission_amount">
             </div>  
 
         <div class="modal-footer">
@@ -122,8 +137,10 @@
             $('#id').val('');
             $('#package').val('');
             $('#treatment').val('');
-            $('#type').val('');
-            $('#commission').val('');
+            $('#price').val('');
+            $('#method').val('');
+            $('#commission_rate').val('');
+            $('#commission_amount').val('');
             $('#exampleModal').modal('show');
     })
     
@@ -136,8 +153,10 @@
             $('#id').val(data.id);
             $('#package').val(data.package);
             $('#treatment').val(data.treatment);
-            $('#type').val(data.type);
-            $('#commission').val(data.commission);
+            $('#price').val(data.price);
+            $('#method').val(data.method);
+            $('#commission_rate').val(data.commission_rate);
+            $('#commission_amount').val(data.commission_amount);
             $('#exampleModal').modal('show');
         })
     });

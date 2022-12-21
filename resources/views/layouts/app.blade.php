@@ -57,7 +57,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </div>
       </section>
       <section class="content">
+        
         <div class="container-fluid">
+        @yield('card')
           <div class="row">
             <div class="col-12">
               <div class="card">

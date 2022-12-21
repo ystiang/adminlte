@@ -12,6 +12,54 @@
   </style>
 @endsection
 
+@section('card')
+
+          <div class="row">
+            <div class="col-sm">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Profile</h3>
+                </div>
+                <div class="card-body">
+                    Name:  {{ Auth::user()->name }}
+                    <br>Position:  {{ Auth::user()->position }}
+                    <br>Month: {{ $month }}
+                    <br>Tier:
+
+                </div>
+              </div>
+            </div>
+            <div class="col-sm">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Monthly Sales Summary</h3>
+                </div>
+                <div class="card-body">
+                        Total Course: {{ $course_sale }}
+                    <br>Total Service: {{ $service_sale }}
+                    <br>Total Product: {{ $product_sale }}
+                    <br>Grand Total: {{ $total_sale }}
+                </div>
+              </div>
+            </div>
+            <div class="col-sm">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Monthly Commission Summary</h3>
+                </div>
+                <div class="card-body">
+                Total Course: {{ $course_comm }}
+                    <br>Total Service: {{ $service_comm }}
+                    <br>Total Product: {{ $product_comm }}
+                    <br>Grand Total: {{ $total_comm }}
+                </div>
+              </div>
+            </div>
+            
+          </div>
+          
+@endsection
+
 @section('content')
 <!-- Content Header (Page header) -->
 
@@ -30,10 +78,10 @@
     <thead>
         <tr>
             <th>Date</th>
-            <th>Name</th>
+            <th>Customer's Name</th>
             <th>Card</th>
             <th>Treatment</th>   
-            <th>Product/Course</th> 
+            <th>Category</th> 
             <th>Product</th>     
             <th>Course</th> 
             <th>Service</th> 
@@ -45,10 +93,10 @@
         @foreach ($commissions as $commission)
         <tr>
             <td>{{ $commission->date }}</td>
-            <td>{{ $commission->user_name }}</td>
+            <td>{{ $commission->customer_name }}</td>
             <td>{{ $commission->card }}</td>
             <td>{{ $commission->treatment }}</td>
-            <td>{{ $commission->productcourse }}</td> 
+            <td>{{ $commission->category }}</td> 
             <td>{{ $commission->product }}</td>
             <td>{{ $commission->course }}</td>
             <td>{{ $commission->service }}</td>
@@ -67,7 +115,7 @@
         </tr>
         @endforeach
     </tbody>
-    <tfoot>
+    <!-- <tfoot>
         <tr>
             <th>Date</th>
             <th>Name</th>
@@ -80,7 +128,7 @@
             <th>Commission</th>
             <th>Action</th>
         </tr>
-    </tfoot>
+    </tfoot> -->
     
 
      <!-- Modal Add -->
@@ -97,7 +145,9 @@
         <form action="{{ route('commission') }} " method="POST">
         @csrf
             <input type="hidden" id="id" name="id">
-            @role('admin')
+            <input type="hidden" id="user_id" name="user_id" value="{{ Auth::user()->id }}">
+            <input type="hidden" id="user_name" name="user_name" value="{{ Auth::user()->name }}">
+            <!-- @role('admin')
             <input type="hidden" id="user_id" name="user_id">
             <div class="form-group">
                 <label for="package">Name</label>
@@ -110,20 +160,33 @@
                 <label for="package">Name</label>
                 <input type="text" class="form-control" value="{{ Auth::user()->name }}" disabled>
             </div>
-            @endrole
+            @endrole -->
             <div class="form-group">
-                <label for="treatment">Card</label>
+                <label for="customer_name">Customer's Name</label>
+                <input type="text" class="form-control" id="customer_name" name="customer_name">
+            </div>
+            <div class="form-group">
+                <label for="card">Card</label>
                 <input type="text" class="form-control" id="card" name="card">
             </div>
             <div class="form-group">
-                <label for="type">Treatment</label>
-                <input type="text" class="form-control" id="treatment" name="treatment">
+                <label for="treatment">Treatment</label>
+                
+                <select class="form-control" id="treatment" name="treatment">
+                    @foreach($treatments as $treatment)
+                        <option value="{{ $treatment->id }}">{{ $treatment->treatment }}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="form-group">
-                <label for="commission">Product/Course</label>
-                <input type="text" class="form-control" id="productcourse" name="productcourse">
+                <label for="category">Category</label>
+                <select class="form-control" id="category" name="category">
+                    <option value="Course">Course</option>
+                    <option value="Product">Product</option>
+                    <option value="Service">Service</option>
+                </select>
             </div>  
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label for="package">Product</label>
                 <input type="text" class="form-control" id="product" name="product">
             </div>
@@ -138,7 +201,7 @@
             <div class="form-group">
                 <label for="commission">Commission</label>
                 <input type="text" class="form-control" id="commission" name="commission">
-            </div>  
+            </div>   -->
 
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -158,14 +221,11 @@
 <script>
     $(document).on('click', '.addBtn', function() {   
             $('#id').val('');
-            
+            $('#customer_name').val('');
             $('#card').val('');
             $('#treatment').val('');
-            $('#productcourse').val('');
-            $('#product').val('');
-            $('#course').val('');
-            $('#service').val('');            
-            $('#commission').val('');
+            $('#category').val('');
+            
             $('#exampleModal').modal('show');
     })
     
@@ -178,13 +238,11 @@
             $('#id').val(data.id);
             $('#user_id').val(data.user_id);
             $('#user_name').val(data.user_name);
+            $('#customer_name').val(data.customer_name);
             $('#card').val(data.card);
             $('#treatment').val(data.treatment);
-            $('#productcourse').val(data.productcourse);
-            $('#product').val(data.product);
-            $('#course').val(data.course);
-            $('#service').val(data.service);            
-            $('#commission').val(data.commission);
+            $('#category').val(data.category);
+            
             $('#exampleModal').modal('show');
         })
     });

@@ -17,7 +17,9 @@ class Package extends Model
     protected $fillable = [
         'package',
         'treatment',
-        'type',
-        'commission',
+        'price',
+        'method',
+        'commission_rate',
+        'commission_amount',
     ];
 }

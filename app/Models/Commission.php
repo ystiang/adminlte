@@ -17,9 +17,11 @@ class Commission extends Model
     protected $fillable = [
         'user_id',
         'user_name',
+        'customer_name',
         'card',
         'treatment',
-        'productcourse',
+        'category',
+        'price',
         'product',
         'course',
         'service',

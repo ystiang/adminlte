@@ -42,8 +42,8 @@ class PackageController extends Controller
             $this->validate($request, [
                 'package' => 'required',
                 'treatment' => 'required',
-                'type' => 'required',
-                'commission' => 'required',
+                'method' => 'required',
+                'price' => 'required',
             ]);    
             Package::updateOrCreate(
             [            
@@ -52,8 +52,10 @@ class PackageController extends Controller
             [
                 'package' => $request->package,
                 'treatment' => $request->treatment,
-                'type' => $request->type,
-                'commission' => $request->commission,            
+                'method' => $request->method,
+                'price' => $request->price,     
+                'commission_rate' => $request->commission_rate,
+                'commission_amount' => $request->commission_amount,       
             ]);           
             return redirect()->route('package');
         } catch (Exception $e) {
@@ -101,8 +103,10 @@ class PackageController extends Controller
         // Update the data
         $package->package = $request->package;
         $package->treatment = $request->treatment;
-        $package->type = $request->type;
-        $package->commission = $request->commission;
+        $package->method = $request->method;
+        $package->price = $request->price;
+        // $package->commission_rate = $request->commission_rate;
+        // $package->commission_amount = $request->commission_amount;
         $package->save();
 
         return back();
